@@ -39,3 +39,4 @@ venv
 app.db
 /logs/*.log*
 .flaskenv
+/local/
