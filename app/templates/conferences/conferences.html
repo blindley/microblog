@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <a href="{{ url_for('conferences.addconference') }}">{{ 'Add Conference' }}</a>
+    {% for conference in conferences %}
+        <table class="table table-hover">
+            <tr>
+                <td width="24px"><img width="24px" src="{{ conference.logo }}"></td>
+                <td>
+                    <a href="{{ url_for('conferences.conferences', id=conference.id) }}">
+                        {{ conference.name }}
+                    </a>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+{% endblock %}

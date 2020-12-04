@@ -91,3 +91,29 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+
+
+class Conference(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    nickname = db.Column(db.String)
+    hq = db.Column(db.String)
+    logo = db.Column(db.String)
+    about = db.Column(db.String)
+    teams = db.relationship('Team', backref='conference', lazy='dynamic')
+
+    def __repr__(self):
+        return f'<Conference {self.name}>'
+
+
+class Team(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    school = db.Column(db.String)
+    mascot = db.Column(db.String)
+    abbr = db.Column(db.String)
+    about = db.Column(db.String)
+    logo = db.Column(db.String)
+    conference_id = db.Column(db.Integer, db.ForeignKey('conference.id'))
+
+    def __repr__(self):
+        return f'<Conference {self.school}>'
