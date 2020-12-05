@@ -3,11 +3,26 @@ from flask_login import login_required, current_user
 
 from app import db
 from app.models import Conference
-from app.conferences.forms import AddConferenceForm, EditConferenceForm, AddOrEditConferenceForm
+from app.conferences.forms import AddConferenceForm, EditConferenceForm
 from app.conferences import bp
 
-@bp.route('/addconference', methods=['GET', 'POST'])
-def addconference():
+
+@bp.route('/conferences')
+def conferences():
+    conferences = Conference.query.all()
+    return render_template('conferences/conferences.html', title='Conferences', conferences=conferences)
+
+@bp.route('/conference/<int:id>')
+@bp.route('/conferences/<int:id>')
+def conference(id):
+    conference = Conference.query.filter_by(id=id).first_or_404()
+    return render_template('conferences/conference.html', title=conference.nickname, conference=conference)
+    
+@bp.route('/add_conference', methods=['GET', 'POST'])
+@login_required
+def add_conference():
+    if not current_user.admin:
+        abort(403)
     form = AddConferenceForm()
     if form.validate_on_submit():
         conference = Conference(
@@ -20,19 +35,8 @@ def addconference():
         db.session.add(conference)
         db.session.commit()
         flash(f'Conference added.')
-        return redirect(url_for('main.index'))
-    return render_template('conferences/addconference.html', form=form)
-
-
-@bp.route('/conferences')
-def conferences():
-    conferences = Conference.query.all()
-    return render_template('conferences/conferences.html', conferences=conferences)
-
-@bp.route('/conferences/<int:id>')
-def conference(id):
-    conference = Conference.query.filter_by(id=id).first_or_404()
-    return render_template('conferences/conference.html', conference=conference)
+        return redirect(url_for('conferences.conferences', id=conference.id))
+    return render_template('conferences/add_conference.html', title='Add Conference', form=form)
 
 @bp.route('/edit_conference/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -40,7 +44,7 @@ def edit_conference(id):
     if not current_user.admin:
         abort(403)
     conference = Conference.query.filter_by(id=id).first_or_404()
-    form = AddOrEditConferenceForm(original_conference=conference)
+    form = EditConferenceForm(conference)
     if form.validate_on_submit():
         conference.name = form.name.data
         conference.nickname = form.nickname.data
@@ -56,5 +60,5 @@ def edit_conference(id):
         form.hq.data = conference.hq
         form.logo.data = conference.logo
         form.about.data = conference.about
-    return render_template('conferences/edit_conference.html', title='Edit Conference',
-                           form=form)
+    return render_template('conferences/edit_conference.html',
+        title=f'Edit: {conference.nickname}', form=form)

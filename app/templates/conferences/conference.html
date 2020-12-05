@@ -8,10 +8,10 @@
             <h1>{{ conference.name }} ({{ conference.nickname }})</h1>
             {% if conference.hq %}<p>Headquartered in {{ conference.hq }}</p>{% endif %}
             {% if conference.about %}<p>{{ conference.about }}</p>{% endif %}
+            {% if current_user.admin %}
+            <p><a href="{{ url_for('conferences.edit_conference', id=conference.id) }}">Edit Conference Data</a></p>
+            {% endif %}
         </td>
     </tr>
 </table>
-{% if current_user.admin %}
-You are the admin
-{% endif %}
 {% endblock %}

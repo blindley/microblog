@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <a href="{{ url_for('conferences.addconference') }}">{{ 'Add Conference' }}</a>
+    {% if current_user.admin %}
+        <a href="{{ url_for('conferences.add_conference') }}">{{ 'Add Conference' }}</a>
+    {% endif %}
     {% for conference in conferences %}
         <table class="table table-hover">
             <tr>
