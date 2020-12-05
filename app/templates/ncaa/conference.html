@@ -14,4 +14,7 @@
         </td>
     </tr>
 </table>
+{% for team in conference.teams.all() %}
+    {% include 'ncaa/_team_link.html' %}
+{% endfor %}
 {% endblock %}
