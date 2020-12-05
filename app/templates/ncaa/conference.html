@@ -3,7 +3,7 @@
 {% block app_content %}
 <table class="table table-hover">
     <tr>
-        <td width="256px"><img width="256px" src="{{ conference.logo }}"></td>
+        <td width="256px"><img width="256px" height="256px" src="{{ conference.logo }}"></td>
         <td>
             <h1>{{ conference.name }} ({{ conference.nickname }})</h1>
             {% if conference.hq %}<p>Headquartered in {{ conference.hq }}</p>{% endif %}
