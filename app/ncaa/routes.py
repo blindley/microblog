@@ -3,20 +3,20 @@ from flask_login import login_required, current_user
 
 from app import db
 from app.models import Conference
-from app.conferences.forms import AddConferenceForm, EditConferenceForm
-from app.conferences import bp
+from app.ncaa.forms import AddConferenceForm, EditConferenceForm
+from app.ncaa import bp
 
 
 @bp.route('/conferences')
 def conferences():
     conferences = Conference.query.all()
-    return render_template('conferences/conferences.html', title='Conferences', conferences=conferences)
+    return render_template('ncaa/conferences.html', title='Conferences', conferences=conferences)
 
 @bp.route('/conference/<int:id>')
 @bp.route('/conferences/<int:id>')
 def conference(id):
     conference = Conference.query.filter_by(id=id).first_or_404()
-    return render_template('conferences/conference.html', title=conference.nickname, conference=conference)
+    return render_template('ncaa/conference.html', title=conference.nickname, conference=conference)
     
 @bp.route('/add_conference', methods=['GET', 'POST'])
 @login_required
@@ -35,8 +35,8 @@ def add_conference():
         db.session.add(conference)
         db.session.commit()
         flash(f'Conference added.')
-        return redirect(url_for('conferences.conferences', id=conference.id))
-    return render_template('conferences/add_conference.html', title='Add Conference', form=form)
+        return redirect(url_for('ncaa.conferences', id=conference.id))
+    return render_template('ncaa/add_conference.html', title='Add Conference', form=form)
 
 @bp.route('/edit_conference/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -53,12 +53,12 @@ def edit_conference(id):
         conference.about = form.about.data
         db.session.commit()
         flash('Your changes have been saved.')
-        return redirect(url_for('conferences.edit_conference', id=id))
+        return redirect(url_for('ncaa.edit_conference', id=id))
     elif request.method == 'GET':
         form.name.data = conference.name
         form.nickname.data = conference.nickname
         form.hq.data = conference.hq
         form.logo.data = conference.logo
         form.about.data = conference.about
-    return render_template('conferences/edit_conference.html',
+    return render_template('ncaa/edit_conference.html',
         title=f'Edit: {conference.nickname}', form=form)

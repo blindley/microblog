@@ -40,8 +40,8 @@ def create_app(config_class=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    from app.conferences import bp as conferences_bp
-    app.register_blueprint(conferences_bp)
+    from app.ncaa import bp as ncaa_bp
+    app.register_blueprint(ncaa_bp)
 
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:
