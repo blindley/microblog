@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<table class="table table-hover">
+    <tr>
+        <td width="256px"><img width="256px" src="{{ conference.logo }}"></td>
+        <td>
+            <h1>{{ conference.name }} ({{ conference.nickname }})</h1>
+            {% if conference.hq %}<p>Headquartered in {{ conference.hq }}</p>{% endif %}
+            {% if conference.about %}<p>{{ conference.about }}</p>{% endif %}
+        </td>
+    </tr>
+</table>
+{% if current_user.admin %}
+You are the admin
+{% endif %}
+{% endblock %}
