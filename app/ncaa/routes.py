@@ -96,8 +96,29 @@ def add_team():
         return redirect(url_for('ncaa.teams', id=team.id))
     return render_template('ncaa/add_team.html', title='Add Team', form=form)
 
-@bp.route('/edit_team', methods=['GET', 'POST'])
+@bp.route('/edit_team/<int:id>', methods=['GET', 'POST'])
 @login_required
-def edit_team():
-    flash('that page is not yet implemented')
-    return redirect(url_for('main.index'))
+def edit_team(id):
+    if not current_user.admin:
+        abort(403)
+    team = Team.query.filter_by(id=id).first_or_404()
+    form = AddOrEditTeamForm(team)
+    if form.validate_on_submit():
+        team.school = form.school.data
+        team.mascot = form.mascot.data
+        team.abbr = form.abbr.data
+        team.logo = form.logo.data
+        team.conference_id = form.conference_id.data
+        team.about = form.about.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('ncaa.edit_team', id=id))
+    elif request.method == 'GET':
+        form.school.data = team.school
+        form.mascot.data = team.mascot
+        form.abbr.data = team.abbr
+        form.logo.data = team.logo
+        form.conference_id.data = team.conference_id
+        form.about.data = team.about
+    return render_template('ncaa/edit_team.html',
+        title=f'Edit: {team.school}', form=form)
