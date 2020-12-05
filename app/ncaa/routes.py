@@ -2,8 +2,8 @@ from flask import flash, url_for, redirect, render_template, request, abort
 from flask_login import login_required, current_user
 
 from app import db
-from app.models import Conference
-from app.ncaa.forms import AddConferenceForm, EditConferenceForm
+from app.models import Conference, Team
+from app.ncaa.forms import AddConferenceForm, EditConferenceForm, AddOrEditTeamForm
 from app.ncaa import bp
 
 
@@ -62,3 +62,42 @@ def edit_conference(id):
         form.about.data = conference.about
     return render_template('ncaa/edit_conference.html',
         title=f'Edit: {conference.nickname}', form=form)
+
+
+@bp.route('/teams')
+def teams():
+    teams = Team.query.all()
+    return render_template('ncaa/teams.html', title='Teams', teams=teams)
+
+@bp.route('/team/<int:id>')
+@bp.route('/teams/<int:id>')
+def team(id):
+    team = Team.query.filter_by(id=id).first_or_404()
+    return render_template('ncaa/team.html', title=team.abbr, team=team)
+
+@bp.route('/add_team', methods=['GET', 'POST'])
+@login_required
+def add_team():
+    if not current_user.admin:
+        abort(403)
+    form = AddOrEditTeamForm()
+    if form.validate_on_submit():
+        team = Team(
+                school=form.school.data,
+                mascot=form.mascot.data,
+                abbr=form.abbr.data,
+                logo=form.logo.data,
+                conference_id=form.conference_id.data,
+                about=form.about.data
+            )
+        db.session.add(team)
+        db.session.commit()
+        flash(f'Team added.')
+        return redirect(url_for('ncaa.teams', id=team.id))
+    return render_template('ncaa/add_team.html', title='Add Team', form=form)
+
+@bp.route('/edit_team', methods=['GET', 'POST'])
+@login_required
+def edit_team():
+    flash('that page is not yet implemented')
+    return redirect(url_for('main.index'))

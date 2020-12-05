@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<table class="table table-hover">
+    <tr>
+        <td width="256px"><img width="256px" src="{{ team.logo }}"></td>
+        <td>
+            <h1>{{ team.school }} {{ team.mascot }} ({{ team.abbr }})</h1>
+            {% if team.about %}<p>{{ team.about }}</p>{% endif %}
+            {% if current_user.admin %}
+            <p><a href="{{ url_for('ncaa.edit_team', id=team.id) }}">Edit Team Data</a></p>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+{% endblock %}

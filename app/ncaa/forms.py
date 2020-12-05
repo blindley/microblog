@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import ValidationError, DataRequired
 
 from app.models import Conference, Team
@@ -39,35 +39,32 @@ def AddConferenceForm():
 def EditConferenceForm(conference):
     return AddOrEditConferenceForm(original_conference=conference)
 
-# class AddOrEditTeamForm(FlaskForm):
-#     school = StringField('School Name', validators=[DataRequired()])
-#     mascot = StringField('Mascot', validators=[DataRequired()])
-#     abbr = StringField('Abbreviation', validators=[DataRequired()])
-#     logo = StringField('Logo URL')
-#     about = TextAreaField('About')
-#     submit = SubmitField('Submit')
+class AddOrEditTeamForm(FlaskForm):
+    school = StringField('School Name', validators=[DataRequired()])
+    mascot = StringField('Mascot', validators=[DataRequired()])
+    abbr = StringField('Abbreviation', validators=[DataRequired()])
+    logo = StringField('Logo URL')
+    conference_id = SelectField('Conference', validators=[DataRequired()], coerce=int)
+    about = TextAreaField('About')
+    submit = SubmitField('Submit')
 
-#     def __init__(self, original_team=None, *args, **kwargs):
-#         super(AddOrEditConferenceForm, self).__init__(*args, **kwargs)
-#         self.original_school = None
-#         self.original_mascot = None
-#         self.original_abbr = None
-#         if original_team:
-#             self.original_school = original_team.school
-#             self.original_mascot = original_team.mascot
-#             self.original_abbr = original_team.abbr
+    def __init__(self, original_team=None, *args, **kwargs):
+        super(AddOrEditTeamForm, self).__init__(*args, **kwargs)
+        conf_choices = [(c.id, c.nickname) for c in Conference.query.all()]
+        self.conference_id.choices = conf_choices
+        self.original_school = None
+        self.original_mascot = None
+        self.original_abbr = None
+        if original_team:
+            self.original_school = original_team.school
+            self.original_mascot = original_team.mascot
+            self.original_abbr = original_team.abbr
 
-#     def validate_school(self, school):
-#         if (self.original_school is None) or (school.data != self.original_school):
-#             team = Team.query.filter_by(school=school.data).first()
-#             if team is not None:
-#                 raise ValidationError('Please use a different conference school.')
+    def validate_school(self, school):
+        validate_unique_field(school, self.original_school, Team, 'school')
 
-#     def validate_nickname(self, nickname):
-#         if (self.original_nickname is None) or (nickname.data != self.original_nickname):
-#             conference = Conference.query.filter_by(nickname=nickname.data).first()
-#             if conference is not None:
-#                 raise ValidationError('Please use a different conference nickname.')
+    def validate_abbr(self, abbr):
+        validate_unique_field(abbr, self.original_abbr, Team, 'abbr')
 
 # class Team(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
