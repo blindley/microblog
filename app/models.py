@@ -88,6 +88,7 @@ class Post(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
@@ -100,6 +101,7 @@ class Conference(db.Model):
     hq = db.Column(db.String)
     logo = db.Column(db.String)
     about = db.Column(db.String)
+    
     teams = db.relationship('Team', backref='conference', lazy='dynamic')
 
     def __repr__(self):
@@ -115,5 +117,8 @@ class Team(db.Model):
     logo = db.Column(db.String)
     conference_id = db.Column(db.Integer, db.ForeignKey('conference.id'))
 
+    posts = db.relationship('Post', backref='team_page', lazy='dynamic')
+
     def __repr__(self):
         return f'<Conference {self.school}>'
+

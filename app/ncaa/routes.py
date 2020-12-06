@@ -2,9 +2,10 @@ from flask import flash, url_for, redirect, render_template, request, abort
 from flask_login import login_required, current_user
 
 from app import db
-from app.models import Conference, Team
+from app.models import Conference, Team, Post
 from app.ncaa.forms import AddConferenceForm, EditConferenceForm, AddOrEditTeamForm
 from app.ncaa import bp
+from app.main.forms import PostForm
 
 
 @bp.route('/conferences')
@@ -69,11 +70,19 @@ def teams():
     teams = Team.query.all()
     return render_template('ncaa/teams.html', title='Teams', teams=teams)
 
-@bp.route('/team/<int:id>')
-@bp.route('/teams/<int:id>')
+@bp.route('/team/<int:id>', methods=['GET', 'POST'])
+@bp.route('/teams/<int:id>', methods=['GET', 'POST'])
+@login_required
 def team(id):
     team = Team.query.filter_by(id=id).first_or_404()
-    return render_template('ncaa/team.html', title=team.abbr, team=team)
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user, team_page=team)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('ncaa.team', id=id))
+    return render_template('ncaa/team.html', title=team.abbr, team=team, form=form)
 
 @bp.route('/add_team', methods=['GET', 'POST'])
 @login_required
