@@ -4,16 +4,16 @@
     {% if current_user.admin %}
         <a href="{{ url_for('ncaa.add_conference') }}">Add Conference</a>
     {% endif %}
+    <table class="table table-hover">
     {% for conference in conferences %}
-        <table class="table table-hover">
-            <tr>
-                <td width="24px"><img width="24px" src="{{ conference.logo }}"></td>
-                <td>
-                    <a href="{{ url_for('ncaa.conference', id=conference.id) }}">
-                        {{ conference.name }}
-                    </a>
-                </td>
-            </tr>
-        </table>
+        <tr>
+            <td width="24px"><img width="24px" src="{{ conference.logo }}"></td>
+            <td>
+                <a href="{{ url_for('ncaa.conference', id=conference.id) }}">
+                    {{ conference.name }}
+                </a>
+            </td>
+        </tr>
     {% endfor %}
+    </table>
 {% endblock %}

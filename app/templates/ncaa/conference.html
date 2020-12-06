@@ -14,7 +14,18 @@
         </td>
     </tr>
 </table>
+
+<table class="table table_hover">
 {% for team in conference.teams.all() %}
-    {% include 'ncaa/_team_link.html' %}
+    <tr>
+        <td width="24px"><img width="24px" src="{{ team.logo }}"></td>
+        <td>
+            <a href="{{ url_for('ncaa.team', id=team.id) }}">
+                {{ team.abbr }}
+            </a>
+        </td>
+    </tr>
 {% endfor %}
+</table>
+
 {% endblock %}
