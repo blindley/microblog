@@ -2,6 +2,20 @@
 {% import 'macros.html' as macros %}
 
 {% block app_content %}
+
+<div class="media">
+    <img class="mr-3" width="64px" height="64px" src="{{ conference.logo }}">
+    <div class="media-body">
+        <h2 class="mt-0">{{ conference.name }} ({{ conference.nickname }})</h2>
+        {% if conference.hq %}<p>Headquartered in {{ conference.hq }}</p>{% endif %}
+        {% if conference.about %}<p>{{ conference.about }}</p>{% endif %}
+        {% if current_user.admin %}
+            <p><a href="{{ url_for('ncaa.edit_conference', id=conference.id) }}">Edit Conference Data</a></p>
+        {% endif %}
+    </div>
+</div>
+
+{#
 <table class="table table-hover">
     <tr>
         <td width="128px"><img width="128px" height="128px" src="{{ conference.logo }}"></td>
@@ -15,6 +29,7 @@
         </td>
     </tr>
 </table>
+#}
 
 <h2>Conference Member Teams</h2>
 {{ macros.render_team_list(conference.teams.all()) }}
