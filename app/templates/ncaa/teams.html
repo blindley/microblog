@@ -1,21 +1,14 @@
 {% extends "base.html" %}
+{% import 'macros.html' as macros %}
 
 {% block app_content %}
-{% if current_user.admin %}
-    <a href="{{ url_for('ncaa.add_team') }}">Add Team</a>
-{% endif %}
 
-<table class="table table_hover">
-{% for team in teams %}
-    <tr>
-        <td width="24px"><img width="24px" src="{{ team.logo }}"></td>
-        <td>
-            <a href="{{ url_for('ncaa.team', id=team.id) }}">
-                {{ team.abbr }}
-            </a>
-        </td>
-    </tr>
-{% endfor %}
-</table>
+<h2>All Member NCAA Teams</h2>
+
+{{ macros.render_team_list(teams) }}
+
+{% if current_user.admin %}
+    <p><a href="{{ url_for('ncaa.add_team') }}">Add New Team</a></p>
+{% endif %}
 
 {% endblock %}

@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% import 'macros.html' as macros %}
 
 {% block app_content %}
 <table class="table table-hover">
     <tr>
-        <td width="256px"><img width="256px" height="256px" src="{{ conference.logo }}"></td>
+        <td width="128px"><img width="128px" height="128px" src="{{ conference.logo }}"></td>
         <td>
             <h1>{{ conference.name }} ({{ conference.nickname }})</h1>
             {% if conference.hq %}<p>Headquartered in {{ conference.hq }}</p>{% endif %}
@@ -15,17 +16,7 @@
     </tr>
 </table>
 
-<table class="table table_hover">
-{% for team in conference.teams.all() %}
-    <tr>
-        <td width="24px"><img width="24px" src="{{ team.logo }}"></td>
-        <td>
-            <a href="{{ url_for('ncaa.team', id=team.id) }}">
-                {{ team.abbr }}
-            </a>
-        </td>
-    </tr>
-{% endfor %}
-</table>
+<h2>Conference Member Teams</h2>
+{{ macros.render_team_list(conference.teams.all()) }}
 
 {% endblock %}
