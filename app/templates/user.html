@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% import 'macros.html' as macros %}
 
 {% block app_content %}
 <div class="media">
@@ -10,6 +11,11 @@
             <p><a href="{{ url_for('main.edit_profile') }}">Edit your profile</a></p>
         {% endif %}
     </div>
+</div>
+<hr>
+<div class="container">
+    <h3>{{ user.username }} follows these teams</h3>
+    {{ macros.render_team_list(user.teams.all()) }}
 </div>
 
 {% endblock %}

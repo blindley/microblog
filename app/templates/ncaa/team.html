@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% import 'bootstrap/form.html' as wtf %}
 
 {% set conference = team.conference %}
@@ -22,6 +22,18 @@
             <p><a href="{{ url_for('ncaa.edit_team', id=team.id) }}">Edit Team Data</a></p>
         {% endif %}
     </div>
+</div>
+
+<div class="container">
+<h4>{{ team.abbr }} Fans</h4>
+<ul class="list-unstyled" style="column-width: 200px; column-count: auto;">
+    {% for user in team.fans.all() %}
+        <li>
+            <img width="16px" src="{{ user.avatar(16) }}">
+            <a href="{{ url_for('main.user', username=user.username) }}">{{ user.username }}</a>
+        </li>
+    {% endfor %}
+</ul>
 </div>
 
 {% if form and current_user.is_authenticated %}
