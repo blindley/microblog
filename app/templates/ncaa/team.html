@@ -11,6 +11,13 @@
         <h2 class="mt-0">{{ team.school }} {{ team.mascot }} ({{ team.abbr }})</h2>
         <p>Member of <a href="{{ url_for('ncaa.conference', id=conference.id) }}">{{ conference.name }}</a></p>
         {% if team.about %}<p>{{ team.about }}</p>{% endif %}
+        {% if current_user.is_authenticated %}
+            {% if team in current_user.teams %}
+                <p><a href="{{ url_for('ncaa.unfollow_team', id=team.id) }}">Unfollow {{ team.abbr }}</a></p>
+            {% else %}
+                <p><a href="{{ url_for('ncaa.follow_team', id=team.id) }}">Follow {{ team.abbr }}</a></p>
+            {% endif %}
+        {% endif %}
         {% if current_user.admin %}
             <p><a href="{{ url_for('ncaa.edit_team', id=team.id) }}">Edit Team Data</a></p>
         {% endif %}

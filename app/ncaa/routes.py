@@ -131,3 +131,22 @@ def edit_team(id):
         form.about.data = team.about
     return render_template('ncaa/edit_team.html',
         title=f'Edit: {team.school}', form=form)
+
+
+@bp.route('/follow_team/<int:id>')
+@login_required
+def follow_team(id):
+    team = Team.query.filter_by(id=id).first_or_404()
+    current_user.teams.append(team)
+    db.session.commit()
+    flash(f'You are now following {team.abbr}!', 'success')
+    return redirect(url_for('ncaa.team', id=id))
+
+@bp.route('/unfollow_team/<int:id>')
+@login_required
+def unfollow_team(id):
+    team = Team.query.filter_by(id=id).first_or_404()
+    current_user.teams.remove(team)
+    db.session.commit()
+    flash(f'You are no longer following {team.abbr}.', 'success')
+    return redirect(url_for('ncaa.team', id=id))
