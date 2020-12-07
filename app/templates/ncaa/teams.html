@@ -3,7 +3,7 @@
 
 {% block app_content %}
 
-<h2>All Member NCAA Teams</h2>
+<h2>All NCAA Division I Member Teams</h2>
 
 {{ macros.render_team_list(Team.query.order_by(Team.school).all()) }}
 

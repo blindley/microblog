@@ -47,6 +47,9 @@ def create_app(config_class=Config):
     from app.ncaa import bp as ncaa_bp
     app.register_blueprint(ncaa_bp)
 
+    from app.api import bp as api_bp
+    app.register_blueprint(api_bp)
+
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:
             auth = None

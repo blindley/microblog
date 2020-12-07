@@ -1,6 +1,37 @@
 {% extends 'base.html' %}
 
 {% block app_content %}
-    <h1>Hi, {{ current_user.username }}</h1>
-    <p>Rankings here later</p>
+    {% if current_user.is_authenticated %}
+        <h1>Welcome, {{ current_user.username }}!</h1>
+    {% else %}
+        <h1>Welcome, guest!</h1>
+        <p>Sign in <a href="{{ url_for('auth.login')}}">here!</a></p>
+    {% endif %}
+
+    <hr>
+    {% if rankings %}
+        <h3>NCAA AP Top 25</h3>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">NAME</th>
+                    <th scope="col">Records</th>
+                    <th scope="col">Points</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for rank in rankings %}
+                <tr>
+                    <td>{{ rank.current }}</td>
+                    <td>{{ rank.team.nickname }}</td>
+                    <td>{{ rank.recordSummary }}</td>
+                    <td>{{ rank.points|int }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3>Error! Unable to access ranking data. Try again in a little while.</h3>
+    {% endif %}
 {% endblock %}
