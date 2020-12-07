@@ -1,19 +1,18 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+    <ul class="list-group">
+    {% for conference in conferences %}
+        <li class="list-group-item">
+            <img width="28px" src="{{ conference.logo }}">&nbsp;
+            <a href="{{ url_for('ncaa.conference', id=conference.id) }}">
+                {{ conference.name }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+
     {% if current_user.admin %}
         <a href="{{ url_for('ncaa.add_conference') }}">Add Conference</a>
     {% endif %}
-    <table class="table table-hover">
-    {% for conference in conferences %}
-        <tr>
-            <td width="24px"><img width="24px" src="{{ conference.logo }}"></td>
-            <td>
-                <a href="{{ url_for('ncaa.conference', id=conference.id) }}">
-                    {{ conference.name }}
-                </a>
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
 {% endblock %}

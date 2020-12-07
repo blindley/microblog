@@ -2,7 +2,7 @@
 <ul class="list-group">
     {% for team in team_list %}
         <li class="list-group-item">
-            <img width="28px" height="28px" src="{{ team.logo }}">
+            <img width="28px" height="28px" src="{{ team.logo }}">&nbsp;
             <a href="{{ url_for('ncaa.team', id=team.id) }}">
                 {{ team.school }} {{ team.mascot }}
             </a>
@@ -10,3 +10,4 @@
     {% endfor %}
 </ul>
 {%- endmacro %}
+
