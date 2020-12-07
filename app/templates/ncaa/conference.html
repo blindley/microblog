@@ -4,7 +4,7 @@
 {% block app_content %}
 
 <div class="media">
-    <img class="mr-3" width="64px" height="64px" src="{{ conference.logo }}">
+    <img class="mr-3" width="96px" height="96px" src="{{ conference.logo }}">
     <div class="media-body">
         <h2 class="mt-0">{{ conference.name }} ({{ conference.nickname }})</h2>
         {% if conference.hq %}<p>Headquartered in {{ conference.hq }}</p>{% endif %}
@@ -16,6 +16,6 @@
 </div>
 
 <h2>Conference Member Teams</h2>
-{{ macros.render_team_list(conference.teams.all()) }}
+{{ macros.render_team_list(conference.teams.order_by(Team.school).all()) }}
 
 {% endblock %}

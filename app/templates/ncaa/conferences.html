@@ -2,7 +2,7 @@
 
 {% block app_content %}
     <ul class="list-group">
-    {% for conference in conferences %}
+    {% for conference in Conference.query.order_by(Conference.name).all() %}
         <li class="list-group-item">
             <img width="28px" src="{{ conference.logo }}">&nbsp;
             <a href="{{ url_for('ncaa.conference', id=conference.id) }}">

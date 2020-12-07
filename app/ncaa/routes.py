@@ -10,8 +10,7 @@ from app.main.forms import PostForm
 
 @bp.route('/conferences')
 def conferences():
-    conferences = Conference.query.all()
-    return render_template('ncaa/conferences.html', title='Conferences', conferences=conferences)
+    return render_template('ncaa/conferences.html', title='Conferences')
 
 @bp.route('/conference/<int:id>')
 @bp.route('/conferences/<int:id>')
@@ -67,8 +66,7 @@ def edit_conference(id):
 
 @bp.route('/teams')
 def teams():
-    teams = Team.query.all()
-    return render_template('ncaa/teams.html', title='Teams', teams=teams)
+    return render_template('ncaa/teams.html', title='Teams')
 
 @bp.route('/team/<int:id>', methods=['GET', 'POST'])
 @bp.route('/teams/<int:id>', methods=['GET', 'POST'])

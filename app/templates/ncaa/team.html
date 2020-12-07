@@ -27,7 +27,7 @@
 <div class="container">
 <h4>{{ team.abbr }} Fans</h4>
 <ul class="list-unstyled" style="column-width: 200px; column-count: auto;">
-    {% for user in team.fans.all() %}
+    {% for user in team.fans.order_by(User.username).all() %}
         <li>
             <img width="16px" src="{{ user.avatar(16) }}">
             <a href="{{ url_for('main.user', username=user.username) }}">{{ user.username }}</a>
@@ -40,7 +40,7 @@
 {{ wtf.render_form(form) }}
 <br>
 {% endif %}
-{% for post in team.posts.all() %}
+{% for post in team.posts.order_by(Post.timestamp.desc()).all() %}
     {% include '_post.html' %}
 {% endfor %}
 {% endblock %}

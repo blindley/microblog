@@ -5,7 +5,7 @@
 
 <h2>All Member NCAA Teams</h2>
 
-{{ macros.render_team_list(teams) }}
+{{ macros.render_team_list(Team.query.order_by(Team.school).all()) }}
 
 {% if current_user.admin %}
     <p><a href="{{ url_for('ncaa.add_team') }}">Add New Team</a></p>
