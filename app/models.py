@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(140))
     admin = db.Column(db.Boolean, default=False)
 
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
     teams = db.relationship('Team', secondary=follow, backref=db.backref('fans', lazy='dynamic'), lazy='dynamic')
 
     def __repr__(self):
@@ -41,7 +41,7 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-class Post(db.Model):
+class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
@@ -49,7 +49,7 @@ class Post(db.Model):
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
 
     def __repr__(self):
-        return '<Post {}>'.format(self.body)
+        return f'<Comment {self.body}>'
 
 
 class Conference(db.Model):
@@ -75,7 +75,7 @@ class Team(db.Model):
     logo = db.Column(db.String)
     conference_id = db.Column(db.Integer, db.ForeignKey('conference.id'))
 
-    posts = db.relationship('Post', backref='team_page', lazy='dynamic')
+    comments = db.relationship('Comment', backref='team_page', lazy='dynamic')
 
     def __repr__(self):
         return f'<Conference {self.school}>'

@@ -2,9 +2,9 @@ from flask import Blueprint, flash, url_for, redirect, render_template, request,
 from flask_login import login_required, current_user
 
 from app import db
-from app.models import Conference, Team, Post
+from app.models import Conference, Team, Comment
 from app.ncaa.forms import AddConferenceForm, EditConferenceForm, AddOrEditTeamForm
-from app.main.forms import PostForm
+from app.main.forms import CommentForm
 
 bp = Blueprint('ncaa', __name__)
 
@@ -73,9 +73,9 @@ def teams():
 @login_required
 def team(id):
     team = Team.query.filter_by(id=id).first_or_404()
-    form = PostForm()
+    form = CommentForm()
     if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user, team_page=team)
+        post = Comment(body=form.comment.data, author=current_user, team_page=team)
         db.session.add(post)
         db.session.commit()
         flash('Your post is now live!')

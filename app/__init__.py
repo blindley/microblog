@@ -46,7 +46,7 @@ def create_app(config_class=Config):
 
 
     app.jinja_env.globals.update({
-        'Post': models.Post,
+        'Comment': models.Comment,
         'User': models.User,
         'Team': models.Team,
         'Conference': models.Conference

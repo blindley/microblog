@@ -40,7 +40,7 @@
 {{ wtf.render_form(form) }}
 <br>
 {% endif %}
-{% for post in team.posts.order_by(Post.timestamp.desc()).all() %}
-    {% include '_post.html' %}
+{% for comment in team.comments.order_by(Comment.timestamp.desc()).all() %}
+    {% include '_comment.html' %}
 {% endfor %}
 {% endblock %}
