@@ -1,9 +1,9 @@
 import requests
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask import Blueprint, render_template, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import EditProfileForm
-from app.models import User
+from app.models import User, Comment
 
 bp = Blueprint('main', __name__)
 
@@ -41,3 +41,14 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 
+@bp.route('/delete_comment/<int:id>')
+@login_required
+def delete_comment(id):
+    comment = Comment.query.filter_by(id=id).first_or_404()
+    if not (current_user.admin or current_user.id == comment.user_id):
+        abort(403)
+    db.session.delete(comment)
+    db.session.commit()
+    redirect_page = request.args.get('pageref') or url_for('main.index')
+    flash('The comment has been deleted')
+    return redirect(redirect_page)
