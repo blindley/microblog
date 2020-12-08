@@ -13,9 +13,13 @@
         {% if team.about %}<p>{{ team.about }}</p>{% endif %}
         {% if current_user.is_authenticated %}
             {% if team in current_user.teams %}
-                <p><a href="{{ url_for('ncaa.unfollow_team', id=team.id) }}">Unfollow {{ team.abbr }}</a></p>
+                <p><a class="btn btn-primary" href="{{ url_for('ncaa.unfollow_team', id=team.id) }}">
+                    Unfollow {{ team.abbr }}
+                </a></p>
             {% else %}
-                <p><a href="{{ url_for('ncaa.follow_team', id=team.id) }}">Follow {{ team.abbr }}</a></p>
+                <p><a class="btn btn-primary" href="{{ url_for('ncaa.follow_team', id=team.id) }}">
+                    Follow {{ team.abbr }}
+                </a></p>
             {% endif %}
         {% endif %}
         {% if current_user.admin %}
