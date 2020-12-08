@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% import 'macros.html' as macros %}
 
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='conference.css') }}">
+{% endblock %}
+
 {% block app_content %}
 
 <div class="media">
@@ -16,6 +21,14 @@
 </div>
 
 <h2>Conference Member Teams</h2>
-{{ macros.render_team_list(conference.teams.order_by(Team.school).all()) }}
+<div class="team-list">
+    {% for team in conference.teams.order_by(Team.school).all() %}
+        <a href="{{ url_for('ncaa.team', id=team.id) }}" class="team-list-item">
+            <img class="logo-large" src="{{ team.logo }}" alt="{{ team.school }}"/>
+            <div class="team-name">{{ team.school }}</div>
+        </a>
+    {% endfor %}
+</div>
+
 
 {% endblock %}
