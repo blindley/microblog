@@ -75,7 +75,7 @@ class Team(db.Model):
     logo = db.Column(db.String)
     conference_id = db.Column(db.Integer, db.ForeignKey('conference.id'))
 
-    comments = db.relationship('Comment', backref='team_page', lazy='dynamic')
+    comments = db.relationship('Comment', backref='team', lazy='dynamic')
 
     def __repr__(self):
         return f'<Conference {self.school}>'

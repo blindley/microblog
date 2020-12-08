@@ -10,8 +10,8 @@
                 {{ comment.author.username }}
             </a>
             said {{ moment(comment.timestamp).fromNow() }}
-            {% if request.path != url_for('ncaa.team', id=comment.team_page.id) %}
-                on <a href="{{ url_for('ncaa.team', id=comment.team_page.id) }}">{{ comment.team_page.abbr }}</a>
+            {% if request.path != url_for('ncaa.team', id=comment.team.id) %}
+                on <a href="{{ url_for('ncaa.team', id=comment.team.id) }}">{{ comment.team.abbr }}</a>
             {% endif %}
             {% if comment.user_id == current_user.id or current_user.admin %}
                 <small>(<a href="{{ url_for('main.delete_comment', id=comment.id, pageref=request.path) }}"  style="color:red;">delete</a>)</small>

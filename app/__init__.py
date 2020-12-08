@@ -42,7 +42,7 @@ def create_app(config_class=Config):
     app.register_blueprint(ncaa_bp)
 
     from app.api import bp as api_bp
-    app.register_blueprint(api_bp)
+    app.register_blueprint(api_bp, url_prefix='/api')
 
 
     app.jinja_env.globals.update({

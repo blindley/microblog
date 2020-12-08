@@ -75,7 +75,7 @@ def team(id):
     team = Team.query.filter_by(id=id).first_or_404()
     form = CommentForm()
     if form.validate_on_submit():
-        post = Comment(body=form.comment.data, author=current_user, team_page=team)
+        post = Comment(body=form.comment.data, author=current_user, team=team)
         db.session.add(post)
         db.session.commit()
         flash('Your post is now live!')
