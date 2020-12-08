@@ -20,11 +20,6 @@ class EditProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError('Please use a different username.')
 
-
-class EmptyForm(FlaskForm):
-    submit = SubmitField('Submit')
-
-
 class CommentForm(FlaskForm):
     comment = TextAreaField('Say something', validators=[DataRequired()])
     submit = SubmitField('Submit')

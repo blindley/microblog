@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% import 'macros.html' as macros %}
+{% import 'macros.html' as macros with context %}
 
 {% block app_content %}
 <div class="media">
@@ -16,6 +16,13 @@
 <div class="container">
     <h3>{{ user.username }} follows these teams</h3>
     {{ macros.render_team_list(user.teams.all()) }}
+</div>
+
+<div class="container">
+<h3>Comments by {{ user.username }}</h3>
+{% for comment in user.comments.order_by(Comment.timestamp.desc()).all() %}
+    {% include '_comment.html' %}
+{% endfor %}
 </div>
 
 {% endblock %}

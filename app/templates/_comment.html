@@ -9,7 +9,11 @@
             <a href="{{ url_for('main.user', username=comment.author.username) }}">
                 {{ comment.author.username }}
             </a>
-            said {{ moment(comment.timestamp).fromNow() }}<br>
+            said {{ moment(comment.timestamp).fromNow() }}
+            {% if request.path != url_for('ncaa.team', id=comment.team_page.id) %}
+                on <a href="{{ url_for('ncaa.team', id=comment.team_page.id) }}">{{ comment.team_page.abbr }}</a>
+            {% endif %}
+            <br>
             <span id="comment{{ comment.id }}">{{ comment.body }}</span>
         </td>
     </tr>
