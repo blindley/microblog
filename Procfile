@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn ncaafb.py
+web: flask db upgrade; gunicorn ncaafb:app
