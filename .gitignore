@@ -4,3 +4,4 @@ app.db
 /logs/*.log*
 .flaskenv
 /local/
+/doc/
