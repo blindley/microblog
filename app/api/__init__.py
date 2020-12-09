@@ -1,4 +1,5 @@
-from flask import Blueprint, json, jsonify
+from flask import Blueprint, jsonify
+from flask_login import current_user
 from app.models import Conference, Team, Comment, User
 
 
@@ -25,12 +26,16 @@ def _comment_as_object(comment):
     }
 
 def _user_as_object(user):
-    return {
+    obj = {
         'id': user.id,
         'username': user.username,
-        'email': user.email,
         'about_me': user.about_me
     }
+
+    if current_user.is_authenticated and current_user.admin:
+        obj['email'] = user.email
+
+    return obj
 
 def _conference_as_object(conference):
     return {
