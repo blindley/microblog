@@ -34,7 +34,7 @@
     {% for user in team.fans.order_by(User.username).all() %}
         <li>
             <img width="16px" src="{{ user.avatar(16) }}">
-            <a href="{{ url_for('main.user', username=user.username) }}">{{ user.username }}</a>
+            <a href="{{ url_for('profile.user', username=user.username) }}">{{ user.username }}</a>
         </li>
     {% endfor %}
 </ul>
