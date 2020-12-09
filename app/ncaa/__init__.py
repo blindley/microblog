@@ -70,16 +70,17 @@ def teams():
 
 @bp.route('/team/<int:id>', methods=['GET', 'POST'])
 @bp.route('/teams/<int:id>', methods=['GET', 'POST'])
-@login_required
 def team(id):
     team = Team.query.filter_by(id=id).first_or_404()
-    form = CommentForm()
-    if form.validate_on_submit():
-        post = Comment(body=form.comment.data, author=current_user, team=team)
-        db.session.add(post)
-        db.session.commit()
-        flash('Your post is now live!')
-        return redirect(url_for('ncaa.team', id=id))
+    form = None
+    if current_user.is_authenticated:
+        form = CommentForm()
+        if form.validate_on_submit():
+            post = Comment(body=form.comment.data, author=current_user, team=team)
+            db.session.add(post)
+            db.session.commit()
+            flash('Your post is now live!')
+            return redirect(url_for('ncaa.team', id=id))
     return render_template('ncaa/team.html', title=team.abbr, team=team, form=form)
 
 @bp.route('/add_team', methods=['GET', 'POST'])
