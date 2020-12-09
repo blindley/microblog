@@ -11,7 +11,7 @@ from config import Config
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
-login.login_view = 'auth.login'
+login.login_view = 'profile.login'
 login.login_message = 'Please log in to access this page.'
 bootstrap = Bootstrap()
 moment = Moment()
@@ -32,8 +32,8 @@ def create_app(config_class=Config):
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
-    from app.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+    from app.profile import bp as profile_bp
+    app.register_blueprint(profile_bp, url_prefix='/profile')
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)

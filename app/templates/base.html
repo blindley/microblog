@@ -27,14 +27,14 @@
       <ul class="navbar-nav navbar-right">
         {% if current_user.is_anonymous %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                <a class="nav-link" href="{{ url_for('profile.login') }}">Login</a>
             </li>
         {% else %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('main.user', username=current_user.username) }}">{{ current_user.username }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                <a class="nav-link" href="{{ url_for('profile.logout') }}">Logout</a>
             </li>
         {% endif %}
       </ul>
