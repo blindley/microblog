@@ -1,7 +1,7 @@
 {% macro render_team_list(team_list) -%}
-<ul class="list-group">
+<ul class="list-unstyled" style="column-width: 400px; column-count: auto;">
     {% for team in team_list %}
-        <li class="list-group-item">
+        <li>
             <img width="28px" height="28px" src="{{ team.logo }}">&nbsp;
             <a href="{{ url_for('ncaa.team', id=team.id) }}">
                 {{ team.school }} {{ team.mascot }}

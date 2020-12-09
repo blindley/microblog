@@ -5,7 +5,7 @@
 
 {% block app_content %}
 
-<div class="media">
+<div class="media border">
     <img class="mr-3" width="128px" height="128px" src="{{ team.logo }}">
     <div class="media-body">
         <h2 class="mt-0">{{ team.school }} {{ team.mascot }} ({{ team.abbr }})</h2>
@@ -28,8 +28,8 @@
     </div>
 </div>
 
-<div class="container">
 <h4>{{ team.abbr }} Fans</h4>
+<div class="border">
 <ul class="list-unstyled" style="column-width: 200px; column-count: auto;">
     {% for user in team.fans.order_by(User.username).all() %}
         <li>
@@ -44,7 +44,10 @@
 {{ wtf.render_form(form) }}
 <br>
 {% endif %}
+
+<div class="border">
 {% for comment in team.comments.order_by(Comment.timestamp.desc()).all() %}
     {% include '_comment.html' %}
 {% endfor %}
+</div>
 {% endblock %}

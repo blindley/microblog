@@ -2,7 +2,7 @@
 {% import 'macros.html' as macros with context %}
 
 {% block app_content %}
-<div class="media">
+<div class="media border">
     <img class="mr-3" width="192px" height="192px" src="{{ user.avatar(192) }}">
     <div class="media-body">
         <h2 class="mt-0">{{ user.username }}</h2>
@@ -12,14 +12,14 @@
         {% endif %}
     </div>
 </div>
-<hr>
-<div class="container">
-    <h3>{{ user.username }} follows these teams</h3>
+
+<h3>{{ user.username }} follows these teams</h3>
+<div class="border">
     {{ macros.render_team_list(user.teams.all()) }}
 </div>
 
-<div class="container">
 <h3>Comments by {{ user.username }}</h3>
+<div class="border">
 {% for comment in user.comments.order_by(Comment.timestamp.desc()).all() %}
     {% include '_comment.html' %}
 {% endfor %}

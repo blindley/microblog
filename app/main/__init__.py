@@ -12,12 +12,15 @@ bp = Blueprint('main', __name__)
 def index():
     response = requests.get('http://site.api.espn.com/apis/site/v2/sports/football/college-football/rankings')
     rankings = None
+    week_number = None
     if response.status_code == 200:
-        for r in response.json()['rankings']:
+        j = response.json()
+        week_number = j['latestWeek']['value']
+        for r in j['rankings']:
             if r['shortName'] == 'AP Poll':
                 rankings = r['ranks']
                 break
-    return render_template('index.html', title='Home', rankings=rankings)
+    return render_template('index.html', title='Home', rankings=rankings, week_number=week_number)
 
 
 @bp.route('/user/<username>')
