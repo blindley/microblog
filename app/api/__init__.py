@@ -55,9 +55,9 @@ def teams():
     return jsonify(data)
 
 @bp.route('/teams/<int:id>')
-def team(id):
-    team = Team.query.filter_by(id=id).first_or_404()
-    data = _team_as_object(team)
+def conference_teams(id):
+    teams = Team.query.filter_by(conference_id=id).order_by(Team.school).all()
+    data = [_team_as_object(team) for team in teams]
     return jsonify(data)
 
 @bp.route('/comments')
@@ -95,11 +95,5 @@ def team_followers(team_id):
 def conferences():
     conferences = Conference.query.order_by(Conference.name).all()
     data = [_conference_as_object(conf) for conf in conferences]
-    return jsonify(data)
-
-@bp.route('/teams/conference/<int:id>')
-def conference_teams(id):
-    teams = Team.query.filter_by(conference_id=id).order_by(Team.school).all()
-    data = [_team_as_object(team) for team in teams]
     return jsonify(data)
 
